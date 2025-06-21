@@ -8,29 +8,40 @@
     <title>Task Management App</title>
   </head>
   <body>
-    <header>
-      <h1>Task Management App</h1>
-    </header>
-    <form id="new-task-form">
-      <input type="text" id="new-task-input" placeholder="New task" required />
-      <input type="text" id="category-input" placeholder="category" required />
-      <input type="datetime-local" id="date-time-input" required />
-      <button id="add-task">Add Task</button>
-    </form>
-    <div id="filter-bar">
-      <label for="category-filter">Category: </label>
-      <select name="category-filter" id="category-filter">
-        <option selected="selected" value="Any">Any</option>
-      </select>
-      <label for="status-filter">Status: </label>
-      <select name="status-filter" id="status-filter">
-        <option selected="selected" value="Any">Any</option>
-        <option value="Active">Active</option>
-        <option value="Complete">Complete</option>
-        <option value="Overdue">Overdue</option>
-      </select>
-      <button id="update">update</button>
+    <div id="flex-grid-container">
+      <form id="new-task-form">
+        <input
+          type="text"
+          id="new-task-input"
+          class="input-borders" 
+          placeholder="New task"
+          required
+        />
+        <input
+          type="text"
+          id="category-input"
+          class="input-borders" 
+          placeholder="category"
+          required
+        />
+        <input type="datetime-local" id="date-time-input" class="input-borders" required />
+        <button id="add-task">Add Task</button>
+      </form>
+      <div id="filter-bar">
+        <label for="category-filter">Category: </label>
+        <select name="category-filter" id="category-filter">
+          <option selected="selected" value="Any">Any</option>
+        </select>
+        <label for="status-filter">Status: </label>
+        <select name="status-filter" id="status-filter">
+          <option selected="selected" value="Any">Any</option>
+          <option value="Active">Active</option>
+          <option value="Complete">Complete</option>
+          <option value="Overdue">Overdue</option>
+        </select>
+        <button id="update">update</button>
+      </div>
+      <div id="task-grid"></div>
     </div>
-    <div id="task-grid"></div>
   </body>
 </html>

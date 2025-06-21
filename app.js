@@ -64,12 +64,19 @@ function timeCheck(deadline) {
 
 //event listener that creates new tasks and adds them to the list
 addTaskButton.addEventListener("click", function () {
-  event.preventDefault();
+
+  if (!taskNameInput.value || !categoryInput.value || !dateTimeInput.value)
+  {
+    return;
+  }
+
   let newTask = new Task(
     taskNameInput.value,
     categoryInput.value,
     dateTimeInput.value
   );
+
+
   fullTaskList.push(newTask);
   saveData();
   categoryBuilder();
@@ -86,7 +93,7 @@ function cardBuilder(task) {
   card.classList.add("card");
 
   //checks status to see if card should be updated
-  if (task.status != "Complete") {
+  if (task.status - "Active") {
     task.status = timeCheck(task.deadline);
   }
 
@@ -125,7 +132,7 @@ function cardBuilder(task) {
   return card;
 }
 
-//filters the lists and displays what user wants to see
+//filters the lists and displays what user wants to see.  I learned about arrows here a little, still fuzzy on the subject
 function filterList() {
   displayedTaskList = [];
   let statusFilter = statusFilterDropdown.value;
