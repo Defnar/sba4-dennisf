@@ -8,6 +8,9 @@ const taskGrid = document.getElementById("task-grid");
 
 
 let fullTaskList = [];
+let displayedTaskList = [];
+let categoryList = [];
+
 
 function Task(taskName, categoryName, timeDeadline, status="Active") {
     this.name = taskName;
@@ -15,6 +18,33 @@ function Task(taskName, categoryName, timeDeadline, status="Active") {
     this.deadline = timeDeadline;
     this.status = status;
 }
+
+
+
+
+function categoryBuilder() {
+    categoryList = [];
+    categoryList.push("any");
+    for (let task of fullTaskList) {
+        if (!categoryList.includes(task.category)) {
+            categoryList.push(task.category);
+        }
+    }
+}
+
+
+filterByDropdown.addEventListener("change", function() {
+    if (filterByDropdown.value == "category"){
+        filterSelectionDropdown.innerHTML = "";
+        categoryBuilder()
+        for (let cat  of categoryList) {
+            let option = document.createElement("option");
+            option.value = cat;
+            option.textContent = cat;
+            filterSelectionDropdown.appendChild(option);
+        }
+    }
+})
 
 
 function timeCheck(deadline) {
@@ -31,4 +61,7 @@ addTaskButton.addEventListener("click", function() {
     let newTask = new Task(taskNameInput.value, categoryInput.value, dateTimeInput.value);
     fullTaskList.push(newTask);
 })
+
+function updateTaskView() {
+}
 
