@@ -3,7 +3,6 @@
 - tasks are persistent across page reloads
 -  Custom category creation through the add task bar, when type in a new category name on a task and hit add task, that category is added to the filter list.
 -  tasks are deletable through the x on the top right corner of the card
--  
 
 
 
