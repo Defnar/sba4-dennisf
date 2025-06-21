@@ -6,25 +6,21 @@ const addTaskButton = document.getElementById("add-task");
 const statusFilterDropdown = document.getElementById("status-filter");
 const categoryFilterDropdown = document.getElementById("category-filter");
 const taskGrid = document.getElementById("task-grid");
+const updateButton = document.getElementById("update")
 
-
+//full task list is pulled from local storage, or declared if nonexistant later
 let fullTaskList = JSON.parse(localStorage.getItem("fullTaskList"));
 
-
-if (!fullTaskList) {
-  fullTaskList = []
-}
-else {
-  updateTaskView();
-  categoryBuilder();
-}
-
-
-
+//category list creates a dropdown menu based on user-defined categories.  displayed task lists uses filters to determine what should be displayed
 let displayedTaskList = [];
 let categoryList = [];
 
-
+if (!fullTaskList) {
+  fullTaskList = [];
+} else {
+  updateTaskView();
+  categoryBuilder();
+}
 
 //task builder for each task
 function Task(taskName, categoryName, timeDeadline, status = "Active") {
@@ -34,12 +30,10 @@ function Task(taskName, categoryName, timeDeadline, status = "Active") {
   this.status = status;
 }
 
-
 function saveData() {
   let taskJSON = JSON.stringify(fullTaskList);
-  localStorage.setItem("fullTaskList", taskJSON)
+  localStorage.setItem("fullTaskList", taskJSON);
 }
-
 
 //builds category list and uses it to create dropdown menu, only call when adding or deleting tasks
 function categoryBuilder() {
@@ -53,12 +47,11 @@ function categoryBuilder() {
   }
   for (let category of categoryList) {
     let option = document.createElement("option");
-  option.value = category;
-  option.textContent = category;
-  categoryFilterDropdown.appendChild(option);
+    option.value = category;
+    option.textContent = category;
+    categoryFilterDropdown.appendChild(option);
   }
 }
-
 
 //takes and compares deadline to current time
 function timeCheck(deadline) {
@@ -69,80 +62,85 @@ function timeCheck(deadline) {
   } else return "Active";
 }
 
-
 //event listener that creates new tasks and adds them to the list
 addTaskButton.addEventListener("click", function () {
+  event.preventDefault();
   let newTask = new Task(
     taskNameInput.value,
     categoryInput.value,
     dateTimeInput.value
   );
   fullTaskList.push(newTask);
-  categoryBuilder();
   saveData();
+  categoryBuilder();
   updateTaskView();
 });
 
-
-//testing function, bring the full task list to the current task list
-function testCase() {
-    displayedTaskList = [...fullTaskList]
-}
-
-
+updateButton.addEventListener("click", function() {
+  updateTaskView();
+})
 
 //create the cards that hold the task information
 function cardBuilder(task) {
-    let card = document.createElement('div');
-    card.classList.add("card");
+  let card = document.createElement("div");
+  card.classList.add("card");
 
-    //checks status to see if card should be updated
-    if (task.status != "Complete") {
-      task.status = timeCheck(task.deadline);
+  //checks status to see if card should be updated
+  if (task.status != "Complete") {
+    task.status = timeCheck(task.deadline);
+  }
+
+  const statusArr = ["Active", "Complete", "Overdue"];
+
+  let cardOptions = document.createElement("select");
+
+  //builds dropdown menu and selects corret option for status
+  for (let cardStatus of statusArr) {
+    let option = document.createElement("option");
+
+    if (task.status == cardStatus) {
+      option.selected = true;
     }
+    option.value = cardStatus;
+    option.textContent = cardStatus;
+    cardOptions.appendChild(option);
+  }
 
-
-    const statusArr = ["Active", "Complete", "Overdue"];
-
-    let cardOptions = document.createElement("select")
-
-
-    //builds dropdown menu and selects corret option for status
-    for (let cardStatus of statusArr) {
-      let option = document.createElement("option")
-
-      if (task.status == cardStatus) {
-        option.selected = true;
-      }
-      option.value = cardStatus;
-      option.textContent = cardStatus;
-      cardOptions.appendChild(option)
-    }
-
-
-
-    //build card html
-    card.innerHTML = `
+  //build card html
+  card.innerHTML = `
     <p class="card-category">${task.category}</p>
     <h3 class="card-title">${task.name}</h3>
     <p class="deadline">${new Date(task.deadline).toLocaleString()}</p>
-    `
+    `;
 
-    card.appendChild(cardOptions);
+  card.appendChild(cardOptions);
 
-    //returns card for update task view to handle
-    return card;
+  //I would prefer to add this elsewhere, but I'm not sure how to attach this to the dorpdown options in another way
+  cardOptions.addEventListener("change", function () {
+    task.status = cardOptions.value;
+    saveData();
+  });
+
+  //returns card for update task view to handle
+  return card;
 }
 
+//filters the lists and displays what user wants to see
+function filterList() {
+  displayedTaskList = [];
+  let statusFilter = statusFilterDropdown.value;
+  let categoryFilter = categoryFilterDropdown.value;
+  let intermediaryArray = fullTaskList.filter(task => task.status == statusFilter || statusFilter == "Any")
+  displayedTaskList = intermediaryArray.filter(task => task.category == categoryFilter || categoryFilter == "Any") 
 
-
-
+}
 
 //updates the task view with the cards
 function updateTaskView() {
   taskGrid.innerHTML = "";
-  testCase() //just for testing out the program
+  filterList();
+ 
   for (let task of displayedTaskList) {
-    taskGrid.appendChild(cardBuilder(task))
+    taskGrid.appendChild(cardBuilder(task));
   }
 }
