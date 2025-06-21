@@ -6,7 +6,7 @@ const addTaskButton = document.getElementById("add-task");
 const statusFilterDropdown = document.getElementById("status-filter");
 const categoryFilterDropdown = document.getElementById("category-filter");
 const taskGrid = document.getElementById("task-grid");
-const updateButton = document.getElementById("update")
+const updateButton = document.getElementById("update");
 
 //full task list is pulled from local storage, or declared if nonexistant later
 let fullTaskList = JSON.parse(localStorage.getItem("fullTaskList"));
@@ -64,9 +64,7 @@ function timeCheck(deadline) {
 
 //event listener that creates new tasks and adds them to the list
 addTaskButton.addEventListener("click", function () {
-
-  if (!taskNameInput.value || !categoryInput.value || !dateTimeInput.value)
-  {
+  if (!taskNameInput.value || !categoryInput.value || !dateTimeInput.value) {
     return;
   }
 
@@ -76,16 +74,15 @@ addTaskButton.addEventListener("click", function () {
     dateTimeInput.value
   );
 
-
   fullTaskList.push(newTask);
   saveData();
   categoryBuilder();
   updateTaskView();
 });
 
-updateButton.addEventListener("click", function() {
+updateButton.addEventListener("click", function () {
   updateTaskView();
-})
+});
 
 //create the cards that hold the task information
 function cardBuilder(task) {
@@ -93,7 +90,7 @@ function cardBuilder(task) {
   card.classList.add("card");
 
   //checks status to see if card should be updated
-  if (task.status - "Active") {
+  if (task.status == "Active") {
     task.status = timeCheck(task.deadline);
   }
 
@@ -118,6 +115,9 @@ function cardBuilder(task) {
     <p class="card-category">${task.category}</p>
     <h3 class="card-title">${task.name}</h3>
     <p class="deadline">${new Date(task.deadline).toLocaleString()}</p>
+    <button aria-label="delete item" type="button" class="del-button">
+      <span aria-hidden="true">&times;</span>
+    </button>
     `;
 
   card.appendChild(cardOptions);
@@ -128,6 +128,19 @@ function cardBuilder(task) {
     saveData();
   });
 
+  const delButton = card.querySelector(".del-button")
+
+
+  //event listener for delete button
+  delButton.addEventListener("click", function()
+{
+  //I'm still studying this arrow thing.  As far as I can tell, it is filter for task where task does not equal task to delete..  I pulled this idea from stackoverflow
+  fullTaskList = fullTaskList.filter(taskFromArray => taskFromArray != task);
+  saveData();
+  categoryBuilder();
+  updateTaskView();
+})
+
   //returns card for update task view to handle
   return card;
 }
@@ -137,16 +150,19 @@ function filterList() {
   displayedTaskList = [];
   let statusFilter = statusFilterDropdown.value;
   let categoryFilter = categoryFilterDropdown.value;
-  let intermediaryArray = fullTaskList.filter(task => task.status == statusFilter || statusFilter == "Any")
-  displayedTaskList = intermediaryArray.filter(task => task.category == categoryFilter || categoryFilter == "Any") 
-
+  let intermediaryArray = fullTaskList.filter(
+    task => task.status == statusFilter || statusFilter == "Any"
+  );
+  displayedTaskList = intermediaryArray.filter(
+    task => task.category == categoryFilter || categoryFilter == "Any"
+  );
 }
 
 //updates the task view with the cards
 function updateTaskView() {
   taskGrid.innerHTML = "";
   filterList();
- 
+
   for (let task of displayedTaskList) {
     taskGrid.appendChild(cardBuilder(task));
   }
