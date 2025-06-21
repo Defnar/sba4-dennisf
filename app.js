@@ -7,7 +7,20 @@ const statusFilterDropdown = document.getElementById("status-filter");
 const categoryFilterDropdown = document.getElementById("category-filter");
 const taskGrid = document.getElementById("task-grid");
 
-let fullTaskList = [];
+
+let fullTaskList = JSON.parse(localStorage.getItem("fullTaskList"));
+
+
+if (!fullTaskList) {
+  fullTaskList = []
+}
+else {
+  updateTaskView();
+  categoryBuilder();
+}
+
+
+
 let displayedTaskList = [];
 let categoryList = [];
 
@@ -19,13 +32,13 @@ function Task(taskName, categoryName, timeDeadline, status = "Active") {
   this.category = categoryName;
   this.deadline = timeDeadline;
   this.status = status;
-
-
-
-
 }
 
 
+function saveData() {
+  let taskJSON = JSON.stringify(fullTaskList);
+  localStorage.setItem("fullTaskList", taskJSON)
+}
 
 
 //builds category list and uses it to create dropdown menu, only call when adding or deleting tasks
@@ -65,6 +78,9 @@ addTaskButton.addEventListener("click", function () {
     dateTimeInput.value
   );
   fullTaskList.push(newTask);
+  categoryBuilder();
+  saveData();
+  updateTaskView();
 });
 
 
@@ -124,4 +140,9 @@ function cardBuilder(task) {
 
 //updates the task view with the cards
 function updateTaskView() {
+  taskGrid.innerHTML = "";
+  testCase() //just for testing out the program
+  for (let task of displayedTaskList) {
+    taskGrid.appendChild(cardBuilder(task))
+  }
 }
