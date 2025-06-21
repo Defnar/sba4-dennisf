@@ -112,9 +112,9 @@ function cardBuilder(task) {
 
   //build card html
   card.innerHTML = `
-    <p class="card-category">${task.category}</p>
-    <h3 class="card-title">${task.name}</h3>
-    <p class="deadline">${new Date(task.deadline).toLocaleString()}</p>
+    <p class="card-category" aria-label="category">${task.category}</p>
+    <h3 class="card-title" aria-label="task name">${task.name}</h3>
+    <p class="deadline" aria-label="task deadline">${new Date(task.deadline).toLocaleString()}</p>
     <button aria-label="delete item" type="button" class="del-button">
       <span aria-hidden="true">&times;</span>
     </button>
