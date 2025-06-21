@@ -1,15 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
     <script defer src="app.js"></script>
     <title>Task Management App</title>
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <h1>Task Management App</h1>
+      <h1>Task Management App</h1>
     </header>
-</body>
+    <form id="new-task-form">
+      <input type="text" id="new-task-input" placeholder="New task" required />
+      <input type="text" id="category-input" placeholder="category" required />
+      <input type="datetime-local" id="date-time-input" required />
+      <button id="add-task">Add Task</button>
+    </form>
+    <div id="filter-bar">
+      <label for="type-dropdown">Filter By</label>
+      <select name="type-dropdown" id="type-dropdwn">
+        <option value="category">Category</option>
+        <option value="Status">Status</option>
+      </select>
+      <label for="filter">Filter</label>
+      <select name="filter" id="filter"></select>
+    </div>
+    <div id="task-grid"></div>
+  </body>
 </html>
