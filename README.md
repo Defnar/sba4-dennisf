@@ -18,7 +18,7 @@
   2. figuring out arrow functions at a basic level so I could implement ideas or solutions I found in stack overflow while understanding them rather than copy-pasting
   3. studying and understanding javascript's date formats and uses.
   4. implementing a delete button
-  5. separationg of some things like event listeners and elements built into the cards
+  5. separation of some things like event listeners and elements built into the cards
 
  ## How I approached solving those challenges
  1. I made a goal, and I chose to stick with it in order to improve myself and push myself further
