@@ -1,7 +1,7 @@
 # App specifications
 - app creates tasks in a grid-card layout.  You can change the status of each task by the dropdown menu at the bottom.
 - tasks are persistent across page reloads
--  Custom category creation through the add task bar, when type in a new category name on a task and hit add task, that category is added to the filter list.
+-  Custom category creation through the add task bar, when you type in a new category name on a task and hit add task, that category is added to the filter list.
 -  tasks are deletable through the x on the top right corner of the card
 
 
